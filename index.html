@@ -38,6 +38,11 @@ h1 { margin: 0 0 4px 0; }
 .total-table td.qualif { background: #dcfce7 !important; font-weight: 600; }
 .total-table td.best-kills { background: #fde047 !important; font-weight: 700; }
 .total-table td.total-score { font-weight: 600; }
+.total-compact-table { width: min(760px, 100%); table-layout: fixed; }
+.total-compact-table th:nth-child(1), .total-compact-table td:nth-child(1) { width: 90px; text-align: right; }
+.total-compact-table th:nth-child(3), .total-compact-table td:nth-child(3) { width: 90px; text-align: right; }
+.total-compact-table th:nth-child(4), .total-compact-table td:nth-child(4) { width: 80px; text-align: right; }
+.total-compact-table th:nth-child(5), .total-compact-table td:nth-child(5) { width: 80px; text-align: right; }
 .num { text-align: right; }
 .player.replacement { background: #fff2b2; }
 .player.absent { background: #ffd6d6; }
@@ -862,7 +867,7 @@ body { margin: 10px; }
     if (totalIdx < 0 && lastIdx >= 2) { totalIdx = lastIdx - 2; }
 
     var table = document.createElement('table');
-    table.className = 'total-table';
+    table.className = 'total-table total-compact-table';
 
     var thead = document.createElement('thead');
     var trh = document.createElement('tr');
@@ -1016,6 +1021,7 @@ body { margin: 10px; }
 </script>
 </body>
 </html>
+
 
 
 
