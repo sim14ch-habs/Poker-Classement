@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
-<html lang=""fr"">
+<html lang="fr">
 <head>
-<meta charset=""utf-8"" />
-<meta name=""viewport"" content=""width=device-width, initial-scale=1"" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Classement Poker - Semaine 7</title>
 <style>
 body { font-family: Segoe UI, Arial, sans-serif; margin: 20px; background: #f4f6fb; color: #1f2937; }
@@ -12,6 +12,8 @@ h1 { margin: 0 0 4px 0; }
 .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; margin-right: 8px; border: 1px solid #cbd5e1; background: #fff; }
 .pill.replacement { background: #fff2b2; }
 .pill.absent { background: #ffd6d6; }
+.pill.qualif { background: #dcfce7; }
+.pill.best-kills { background: #fde047; }
 .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
 .tab-btn { border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 8px; padding: 7px 11px; cursor: pointer; }
 .tab-btn.active { background: #0f172a; color: #fff; border-color: #0f172a; }
@@ -19,22 +21,42 @@ h1 { margin: 0 0 4px 0; }
 .tab-panel.active { display: block; }
 .tab-panel h2 { margin: 0 0 10px 0; font-size: 20px; }
 .week-date { color: #64748b; font-size: 14px; font-weight: 400; margin-left: 8px; }
-table { border-collapse: collapse; width: 100%; background: #ffffff; }
-th, td { border: 1px solid #d1d5db; padding: 7px 9px; font-size: 13px; }
-th { background: #e2e8f0; text-align: left; }
-.num { text-align: right; width: 96px; }
+.tab-panels { overflow-x: auto; }
+.week-table { width: min(760px, 100%); table-layout: fixed; background: #fff; border-collapse: collapse; }
+.week-table th, .week-table td { border: 1px solid #d1d5db; padding: 7px 9px; font-size: 13px; }
+.week-table th { background: #e2e8f0; text-align: left; }
+.week-table th:nth-child(1), .week-table td:nth-child(1) { width: 90px; text-align: right; }
+.week-table th:nth-child(2), .week-table td:nth-child(2) { width: 90px; text-align: right; }
+.week-table th:nth-child(4), .week-table td:nth-child(4) { width: 80px; text-align: right; }
+.week-table td.player { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.total-table { width: 100%; background: #fff; border-collapse: collapse; }
+.total-table th, .total-table td { border: 1px solid #d1d5db; padding: 7px 9px; font-size: 13px; }
+.total-table th { background: #e2e8f0; text-align: left; }
+.total-table .subdate { color: #64748b; font-size: 11px; font-weight: 400; }
+.total-table th:nth-child(2), .total-table td:nth-child(2) { width: 190px; }
+.total-table td.total-player { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.total-table td.qualif { background: #dcfce7; font-weight: 600; }
+.total-table td.best-kills { background: #fde047 !important; font-weight: 700; }
+.total-table td.total-score { font-weight: 600; }
+.num { text-align: right; }
 .player.replacement { background: #fff2b2; }
 .player.absent { background: #ffd6d6; }
+.progression-wrap { width: min(980px, 100%); }
+.progression-toolbar { margin: 8px 0 10px 0; display: flex; gap: 8px; align-items: center; }
+.progression-toolbar select { padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
+#progress-chart { width: 100%; height: auto; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; }
 </style>
 </head>
 <body>
 <h1>Classements Poker - Semaine 7</h1>
-<div class=""meta"">Mise a jour: 2026-03-06 18:40:20</div>
-<div class=""legend"">
-<span class=""pill replacement"">Nom jaune = remplace</span>
-<span class=""pill absent"">Nom rouge = absent non-remplace</span>
+<div class="meta">Mise a jour: 2026-03-06 19:10:28</div>
+<div class="legend">
+<span class="pill replacement">Nom jaune = remplace</span>
+<span class="pill absent">Nom rouge = absent non-remplace</span>
+<span class="pill qualif">Top 10 qualifie</span>
+<span class="pill best-kills">Meilleur total kills</span>
 </div>
-<div class=""tabs"">
+<div class="tabs">
 <button class="tab-btn" data-tab="week-1">Semaine 1</button>
 <button class="tab-btn" data-tab="week-2">Semaine 2</button>
 <button class="tab-btn" data-tab="week-3">Semaine 3</button>
@@ -43,9 +65,10 @@ th { background: #e2e8f0; text-align: left; }
 <button class="tab-btn" data-tab="week-6">Semaine 6</button>
 <button class="tab-btn active" data-tab="week-7">Semaine 7</button>
 
-<button class=""tab-btn"" data-tab=""total"">Classement total</button>
+<button class="tab-btn" data-tab="total">Classement total</button>
+<button class="tab-btn" data-tab="progression">Progression</button>
 </div>
-<div class=""tab-panels"">
+<div class="tab-panels">
 <section id="week-1" class="tab-panel">
 <h2>Semaine 1 <span class="week-date">19-janv-26</span></h2>
 <table class="week-table">
@@ -243,674 +266,663 @@ th { background: #e2e8f0; text-align: left; }
 </tbody></table>
 </section>
 
-<section id=""total"" class=""tab-panel"">
-<section><h2>Classement Total</h2><table>
+<section id="total" class="tab-panel">
+<section>
+<h2>Classement Total</h2>
+<table class="total-table">
+<thead><tr>
+<th>Position</th>
+<th>Joueurs</th>
+<th>Semaine 1<br><span class="subdate">19-janv-26</span></th>
+<th>Semaine 2<br><span class="subdate">26-janv-26</span></th>
+<th>Semaine 3<br><span class="subdate">02-f&#233;vr-26</span></th>
+<th>Semaine 4<br><span class="subdate">09-f&#233;vr-26</span></th>
+<th>Semaine 5<br><span class="subdate">16-f&#233;vr-26</span></th>
+<th>Semaine 6<br><span class="subdate">23-f&#233;vr-26</span></th>
+<th>Semaine 7<br><span class="subdate">02-mars-26</span></th>
+<th>Semaine 8<br><span class="subdate">09-mars-26</span></th>
+<th>Semaine 9<br><span class="subdate">16-mars-26</span></th>
+<th>Semaine 10<br><span class="subdate">23-mars-26</span></th>
+<th>Semaine 11<br><span class="subdate">30-mars-26</span></th>
+<th>Semaine 12<br><span class="subdate">06-avr-26</span></th>
+<th>Semaine 13<br><span class="subdate">13-avr-26</span></th>
+<th>Semaine 14<br><span class="subdate">20-avr-26</span></th>
+<th>TOTAL</th>
+<th>Kills</th>
+<th>Rempl.</th>
+</tr></thead>
+<tbody>
 <tr>
-<th></th>
-<th></th>
-<th>19-janv-26</th>
-<th>26-janv-26</th>
-<th>02-f&#233;vr-26</th>
-<th>09-f&#233;vr-26</th>
-<th>16-f&#233;vr-26</th>
-<th>23-f&#233;vr-26</th>
-<th>02-mars-26</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
+<td class="num qualif">1</td>
+<td class="total-player qualif">Gilles Lemieux</td>
+<td class="num">600</td>
+<td class="num">400</td>
+<td class="num">700</td>
+<td class="num">450</td>
+<td class="num">150</td>
+<td class="num">40</td>
+<td class="num">450</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2790</td>
+<td class="num">13</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>Position</td>
-<td>Joueurs</td>
-<td>Semaine 1</td>
-<td>Semaine 2</td>
-<td>Semaine 3</td>
-<td>Semaine 4</td>
-<td>Semaine 5</td>
-<td>Semaine 6</td>
-<td>Semaine 7</td>
-<td>Semaine 8</td>
-<td>Semaine 9</td>
-<td>Semaine 10</td>
-<td>Semaine 11</td>
-<td>Semaine 12</td>
-<td>Semaine 13</td>
-<td>Semaine 14</td>
-<td>TOTAL</td>
-<td>Kills</td>
-<td>Rempl.</td>
+<td class="num qualif">2</td>
+<td class="total-player qualif">St&#233;phane Caron</td>
+<td class="num">800</td>
+<td class="num">500</td>
+<td class="num">400</td>
+<td class="num">400</td>
+<td class="num">350</td>
+<td class="num">175</td>
+<td class="num">150</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2775</td>
+<td class="num">5</td>
+<td class="num">3</td>
 </tr>
 <tr>
-<td>1</td>
-<td>Gilles Lemieux</td>
-<td>600</td>
-<td>400</td>
-<td>700</td>
-<td>450</td>
-<td>150</td>
-<td>40</td>
-<td>450</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2790</td>
-<td>13</td>
-<td>0</td>
+<td class="num qualif">3</td>
+<td class="total-player qualif">Pierre Talbot</td>
+<td class="num">700</td>
+<td class="num">150</td>
+<td class="num">500</td>
+<td class="num">400</td>
+<td class="num">800</td>
+<td class="num">20</td>
+<td class="num">200</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2770</td>
+<td class="num">8</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>2</td>
-<td>St&#233;phane Caron</td>
-<td>800</td>
-<td>500</td>
-<td>400</td>
-<td>400</td>
-<td>350</td>
-<td>175</td>
-<td>150</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2775</td>
-<td>5</td>
-<td>3</td>
+<td class="num qualif">4</td>
+<td class="total-player qualif">Pierre-Marc Pelletier</td>
+<td class="num">350</td>
+<td class="num">800</td>
+<td class="num">300</td>
+<td class="num">200</td>
+<td class="num">250</td>
+<td class="num">80</td>
+<td class="num">700</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2680</td>
+<td class="num">11</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>3</td>
-<td>Pierre Talbot</td>
-<td>700</td>
-<td>150</td>
-<td>500</td>
-<td>400</td>
-<td>800</td>
-<td>20</td>
-<td>200</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2770</td>
-<td>8</td>
-<td>0</td>
+<td class="num qualif">5</td>
+<td class="total-player qualif">Mario Caron</td>
+<td class="num">450</td>
+<td class="num">300</td>
+<td class="num">550</td>
+<td class="num">175</td>
+<td class="num">450</td>
+<td class="num">200</td>
+<td class="num">550</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2675</td>
+<td class="num">3</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>4</td>
-<td>Pierre-Marc Pelletier</td>
-<td>350</td>
-<td>800</td>
-<td>300</td>
-<td>200</td>
-<td>250</td>
-<td>80</td>
-<td>700</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2680</td>
-<td>11</td>
-<td>0</td>
+<td class="num qualif">6</td>
+<td class="total-player qualif">Mathieu L&#233;tourneau</td>
+<td class="num">80</td>
+<td class="num">80</td>
+<td class="num">350</td>
+<td class="num">700</td>
+<td class="num">500</td>
+<td class="num">50</td>
+<td class="num">800</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2560</td>
+<td class="num best-kills">22</td>
+<td class="num">3</td>
 </tr>
 <tr>
-<td>5</td>
-<td>Mario Caron</td>
-<td>450</td>
-<td>300</td>
-<td>550</td>
-<td>175</td>
-<td>450</td>
-<td>200</td>
-<td>550</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2675</td>
-<td>3</td>
-<td>0</td>
+<td class="num qualif">7</td>
+<td class="total-player qualif">Sylvain Rousseau</td>
+<td class="num">250</td>
+<td class="num">700</td>
+<td class="num">250</td>
+<td class="num">100</td>
+<td class="num">200</td>
+<td class="num">550</td>
+<td class="num">30</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2080</td>
+<td class="num">11</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>6</td>
-<td>Mathieu L&#233;tourneau</td>
-<td>80</td>
-<td>80</td>
-<td>350</td>
-<td>700</td>
-<td>500</td>
-<td>50</td>
-<td>800</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2560</td>
-<td>22</td>
-<td>3</td>
+<td class="num qualif">8</td>
+<td class="total-player qualif">Tommy Caron</td>
+<td class="num">60</td>
+<td class="num">350</td>
+<td class="num">600</td>
+<td class="num">80</td>
+<td class="num">100</td>
+<td class="num">700</td>
+<td class="num">125</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">2015</td>
+<td class="num">10</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>7</td>
-<td>Sylvain Rousseau</td>
-<td>250</td>
-<td>700</td>
-<td>250</td>
-<td>100</td>
-<td>200</td>
-<td>550</td>
-<td>30</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2080</td>
-<td>11</td>
-<td>0</td>
+<td class="num qualif">9</td>
+<td class="total-player qualif">Julie Paquet</td>
+<td class="num">125</td>
+<td class="num">450</td>
+<td class="num">125</td>
+<td class="num">150</td>
+<td class="num">600</td>
+<td class="num">300</td>
+<td class="num">225</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1975</td>
+<td class="num">2</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>8</td>
-<td>Tommy Caron</td>
-<td>60</td>
-<td>350</td>
-<td>600</td>
-<td>80</td>
-<td>100</td>
-<td>700</td>
-<td>125</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>2015</td>
-<td>10</td>
-<td>0</td>
+<td class="num qualif">10</td>
+<td class="total-player qualif">Anik Chaloux</td>
+<td class="num">175</td>
+<td class="num">30</td>
+<td class="num">450</td>
+<td class="num">250</td>
+<td class="num">400</td>
+<td class="num">250</td>
+<td class="num">350</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1905</td>
+<td class="num">4</td>
+<td class="num">1</td>
 </tr>
 <tr>
-<td>9</td>
-<td>Julie Paquet</td>
-<td>125</td>
-<td>450</td>
-<td>125</td>
-<td>150</td>
-<td>600</td>
-<td>300</td>
-<td>225</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1975</td>
-<td>2</td>
-<td>0</td>
+<td class="num">11</td>
+<td class="total-player">Patrick Lefebvre</td>
+<td class="num">225</td>
+<td class="num">550</td>
+<td class="num">60</td>
+<td class="num">350</td>
+<td class="num">60</td>
+<td class="num">450</td>
+<td class="num">175</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1870</td>
+<td class="num">5</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>10</td>
-<td>Anik Chaloux</td>
-<td>175</td>
-<td>30</td>
-<td>450</td>
-<td>250</td>
-<td>400</td>
-<td>250</td>
-<td>350</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1905</td>
-<td>4</td>
-<td>1</td>
+<td class="num">12</td>
+<td class="total-player">Serge Blackburn</td>
+<td class="num">400</td>
+<td class="num">100</td>
+<td class="num">400</td>
+<td class="num">225</td>
+<td class="num">400</td>
+<td class="num">225</td>
+<td class="num">100</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1850</td>
+<td class="num">7</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>11</td>
-<td>Patrick Lefebvre</td>
-<td>225</td>
-<td>550</td>
-<td>60</td>
-<td>350</td>
-<td>60</td>
-<td>450</td>
-<td>175</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1870</td>
-<td>5</td>
-<td>0</td>
+<td class="num">13</td>
+<td class="total-player">Annick Proulx</td>
+<td class="num">400</td>
+<td class="num">200</td>
+<td class="num">225</td>
+<td class="num">400</td>
+<td class="num">80</td>
+<td class="num">125</td>
+<td class="num">400</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1830</td>
+<td class="num">0</td>
+<td class="num">2</td>
 </tr>
 <tr>
-<td>12</td>
-<td>Serge Blackburn</td>
-<td>400</td>
-<td>100</td>
-<td>400</td>
-<td>225</td>
-<td>400</td>
-<td>225</td>
-<td>100</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1850</td>
-<td>7</td>
-<td>0</td>
+<td class="num">14</td>
+<td class="total-player">Simon Munger</td>
+<td class="num">550</td>
+<td class="num">50</td>
+<td class="num">30</td>
+<td class="num">60</td>
+<td class="num">50</td>
+<td class="num">400</td>
+<td class="num">600</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1740</td>
+<td class="num">9</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>13</td>
-<td>Annick Proulx</td>
-<td>400</td>
-<td>200</td>
-<td>225</td>
-<td>400</td>
-<td>80</td>
-<td>125</td>
-<td>400</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1830</td>
-<td>0</td>
-<td>2</td>
+<td class="num">15</td>
+<td class="total-player">Nancy Cloutier</td>
+<td class="num">150</td>
+<td class="num">600</td>
+<td class="num">150</td>
+<td class="num">125</td>
+<td class="num">225</td>
+<td class="num">350</td>
+<td class="num">80</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1680</td>
+<td class="num">2</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>14</td>
-<td>Simon Munger</td>
-<td>550</td>
-<td>50</td>
-<td>30</td>
-<td>60</td>
-<td>50</td>
-<td>400</td>
-<td>600</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1740</td>
-<td>9</td>
-<td>0</td>
+<td class="num">16</td>
+<td class="total-player">Marjorie Stewart</td>
+<td class="num">30</td>
+<td class="num">250</td>
+<td class="num">200</td>
+<td class="num">600</td>
+<td class="num">175</td>
+<td class="num">30</td>
+<td class="num">300</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1585</td>
+<td class="num">2</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>15</td>
-<td>Nancy Cloutier</td>
-<td>150</td>
-<td>600</td>
-<td>150</td>
-<td>125</td>
-<td>225</td>
-<td>350</td>
-<td>80</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1680</td>
-<td>2</td>
-<td>0</td>
+<td class="num">17</td>
+<td class="total-player">Pierre Cuerrier</td>
+<td class="num">300</td>
+<td class="num">125</td>
+<td class="num">175</td>
+<td class="num">300</td>
+<td class="num">125</td>
+<td class="num">60</td>
+<td class="num">500</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1585</td>
+<td class="num">4</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>16</td>
-<td>Marjorie Stewart</td>
-<td>30</td>
-<td>250</td>
-<td>200</td>
-<td>600</td>
-<td>175</td>
-<td>30</td>
-<td>300</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1585</td>
-<td>2</td>
-<td>0</td>
+<td class="num">18</td>
+<td class="total-player">Martin Gagnon</td>
+<td class="num">0</td>
+<td class="num">225</td>
+<td class="num">0</td>
+<td class="num">550</td>
+<td class="num">30</td>
+<td class="num">500</td>
+<td class="num">250</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1555</td>
+<td class="num">4</td>
+<td class="num">1</td>
 </tr>
 <tr>
-<td>17</td>
-<td>Pierre Cuerrier</td>
-<td>300</td>
-<td>125</td>
-<td>175</td>
-<td>300</td>
-<td>125</td>
-<td>60</td>
-<td>500</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1585</td>
-<td>4</td>
-<td>0</td>
+<td class="num">19</td>
+<td class="total-player">Daniel L&#233;vesque</td>
+<td class="num">100</td>
+<td class="num">40</td>
+<td class="num">100</td>
+<td class="num">40</td>
+<td class="num">550</td>
+<td class="num">600</td>
+<td class="num">40</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1470</td>
+<td class="num">4</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>18</td>
-<td>Martin Gagnon</td>
-<td>0</td>
-<td>225</td>
-<td>0</td>
-<td>550</td>
-<td>30</td>
-<td>500</td>
-<td>250</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1555</td>
-<td>4</td>
-<td>1</td>
+<td class="num">20</td>
+<td class="total-player">Benoit C&#244;t&#233;</td>
+<td class="num">40</td>
+<td class="num">20</td>
+<td class="num">50</td>
+<td class="num">0</td>
+<td class="num">300</td>
+<td class="num">800</td>
+<td class="num">60</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">1270</td>
+<td class="num">7</td>
+<td class="num">1</td>
 </tr>
 <tr>
-<td>19</td>
-<td>Daniel L&#233;vesque</td>
-<td>100</td>
-<td>40</td>
-<td>100</td>
-<td>40</td>
-<td>550</td>
-<td>600</td>
-<td>40</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1470</td>
-<td>4</td>
-<td>0</td>
+<td class="num">21</td>
+<td class="total-player">Mark-Antoine Trudel</td>
+<td class="num">200</td>
+<td class="num">60</td>
+<td class="num">40</td>
+<td class="num">50</td>
+<td class="num">20</td>
+<td class="num">100</td>
+<td class="num">50</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">520</td>
+<td class="num">0</td>
+<td class="num">0</td>
 </tr>
 <tr>
-<td>20</td>
-<td>Benoit C&#244;t&#233;</td>
-<td>40</td>
-<td>20</td>
-<td>50</td>
-<td>0</td>
-<td>300</td>
-<td>800</td>
-<td>60</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>1270</td>
-<td>7</td>
-<td>1</td>
+<td class="num">22</td>
+<td class="total-player">Evans Marcoux</td>
+<td class="num">50</td>
+<td class="num">175</td>
+<td class="num">80</td>
+<td class="num">0</td>
+<td class="num">40</td>
+<td class="num">150</td>
+<td class="num">20</td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num"></td>
+<td class="num total-score">515</td>
+<td class="num">0</td>
+<td class="num">2</td>
 </tr>
-<tr>
-<td>21</td>
-<td>Mark-Antoine Trudel</td>
-<td>200</td>
-<td>60</td>
-<td>40</td>
-<td>50</td>
-<td>20</td>
-<td>100</td>
-<td>50</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>520</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td>22</td>
-<td>Evans Marcoux</td>
-<td>50</td>
-<td>175</td>
-<td>80</td>
-<td>0</td>
-<td>40</td>
-<td>150</td>
-<td>20</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>515</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</table></section>
+</tbody></table>
+</section>
 
+</section>
+<section id="progression" class="tab-panel">
+<h2>Progression des positions</h2>
+<div class="progression-wrap">
+<div class="progression-toolbar">
+<label for="progress-player">Joueur:</label>
+<select id="progress-player">
+<option value="">Tous les joueurs</option>
+</select>
+</div>
+<svg id="progress-chart" viewBox="0 0 980 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Progression des positions"></svg>
+</div>
 </section>
 </div>
 <script>
 (function() {
-  var buttons = document.querySelectorAll('.tab-btn');
-  var panels = document.querySelectorAll('.tab-panel');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.tab-panel'));
+  var progression = {"weeks":[{"label":"Semaine 1","shortLabel":"S1","date":"19-janv-26"},{"label":"Semaine 2","shortLabel":"S2","date":"26-janv-26"},{"label":"Semaine 3","shortLabel":"S3","date":"02-févr-26"},{"label":"Semaine 4","shortLabel":"S4","date":"09-févr-26"},{"label":"Semaine 5","shortLabel":"S5","date":"16-févr-26"},{"label":"Semaine 6","shortLabel":"S6","date":"23-févr-26"},{"label":"Semaine 7","shortLabel":"S7","date":"02-mars-26"}],"players":[{"name":"Anik Chaloux","positions":[13,21,6,10,2,10,8]},{"name":"Annick Proulx","positions":[5,12,11,1,17,15,7]},{"name":"Benoit Côté","positions":[20,22,19,null,9,1,18]},{"name":"Daniel Lévesque","positions":[16,20,16,20,4,3,20]},{"name":"Evans Marcoux","positions":[19,13,17,null,20,14,22]},{"name":"Gilles Lemieux","positions":[3,7,2,6,14,20,6]},{"name":"Julie Paquet","positions":[15,6,15,14,3,9,11]},{"name":"Mario Caron","positions":[6,9,4,13,6,12,4]},{"name":"Marjorie Stewart","positions":[21,10,12,3,13,21,9]},{"name":"Mark-Antoine Trudel","positions":[12,18,20,19,22,16,19]},{"name":"Martin Gagnon","positions":[null,11,null,4,21,5,10]},{"name":"Mathieu Létourneau","positions":[17,17,8,2,5,19,1]},{"name":"Nancy Cloutier","positions":[14,3,14,15,11,8,17]},{"name":"Patrick Lefebvre","positions":[11,4,18,8,18,6,13]},{"name":"Pierre Cuerrier","positions":[9,15,13,9,15,18,5]},{"name":"Pierre Talbot","positions":[2,14,5,7,1,22,12]},{"name":"Pierre-Marc Pelletier","positions":[8,1,9,12,10,17,2]},{"name":"Serge Blackburn","positions":[7,16,7,11,7,11,16]},{"name":"Simon Munger","positions":[4,19,21,18,19,7,3]},{"name":"Stéphane Caron","positions":[1,5,1,5,8,13,14]},{"name":"Sylvain Rousseau","positions":[10,2,10,16,12,4,21]},{"name":"Tommy Caron","positions":[18,8,3,17,16,2,15]}],"maxPosition":22};
+
   function activate(id) {
     buttons.forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-tab') === id); });
     panels.forEach(function(p) { p.classList.toggle('active', p.id === id); });
+    if (id === 'progression') {
+      renderProgression();
+    }
   }
+
   buttons.forEach(function(btn) {
     btn.addEventListener('click', function() { activate(btn.getAttribute('data-tab')); });
   });
+
+  function svgEl(tag, attrs, text) {
+    var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.keys(attrs || {}).forEach(function(k) { el.setAttribute(k, attrs[k]); });
+    if (text !== undefined && text !== null) { el.textContent = text; }
+    return el;
+  }
+
+  function ensurePlayerOptions() {
+    var sel = document.getElementById('progress-player');
+    if (!sel) { return; }
+    if (sel.options.length > 1) { return; }
+
+    var names = (progression.players || []).map(function(p) { return p.name; }).sort();
+    names.forEach(function(name) {
+      var opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    });
+
+    sel.addEventListener('change', renderProgression);
+  }
+
+  function drawNoData(svg, msg) {
+    while (svg.firstChild) { svg.removeChild(svg.firstChild); }
+    svg.appendChild(svgEl('text', { x: 490, y: 260, 'text-anchor': 'middle', 'font-size': '15', fill: '#64748b' }, msg));
+  }
+
+  function renderProgression() {
+    var svg = document.getElementById('progress-chart');
+    if (!svg) { return; }
+
+    if (!progression || !progression.players || progression.players.length === 0) {
+      drawNoData(svg, 'Aucune donnee de progression.');
+      return;
+    }
+
+    ensurePlayerOptions();
+    while (svg.firstChild) { svg.removeChild(svg.firstChild); }
+
+    var width = 980;
+    var height = 520;
+    var margin = { top: 24, right: 16, bottom: 84, left: 54 };
+    var innerW = width - margin.left - margin.right;
+    var innerH = height - margin.top - margin.bottom;
+
+    var weeks = progression.weeks || [];
+    var maxPos = progression.maxPosition || 22;
+    var sel = document.getElementById('progress-player');
+    var selected = sel ? sel.value : '';
+
+    if (weeks.length === 0) {
+      drawNoData(svg, 'Aucune semaine disponible.');
+      return;
+    }
+
+    function sx(i) {
+      if (weeks.length <= 1) { return margin.left + innerW / 2; }
+      return margin.left + (i * innerW / (weeks.length - 1));
+    }
+
+    function sy(pos) {
+      return margin.top + ((pos - 1) * innerH / Math.max(1, maxPos - 1));
+    }
+
+    for (var p = 1; p <= maxPos; p++) {
+      if (p === 1 || p === maxPos || p % 2 === 0) {
+        var y = sy(p);
+        svg.appendChild(svgEl('line', { x1: margin.left, y1: y, x2: width - margin.right, y2: y, stroke: '#e2e8f0', 'stroke-width': '1' }));
+        svg.appendChild(svgEl('text', { x: margin.left - 8, y: y + 4, 'text-anchor': 'end', 'font-size': '11', fill: '#64748b' }, String(p)));
+      }
+    }
+
+    weeks.forEach(function(w, i) {
+      var x = sx(i);
+      svg.appendChild(svgEl('line', { x1: x, y1: height - margin.bottom + 2, x2: x, y2: height - margin.bottom + 8, stroke: '#94a3b8', 'stroke-width': '1' }));
+      var label = (w && (w.shortLabel || w.label)) ? (w.shortLabel || w.label) : ('S' + (i + 1));
+      svg.appendChild(svgEl('text', { x: x, y: height - margin.bottom + 22, 'text-anchor': 'middle', 'font-size': '11', fill: '#64748b' }, label));
+      var d = (w && w.date) ? w.date : '';
+      if (d) {
+        svg.appendChild(svgEl('text', { x: x, y: height - margin.bottom + 36, 'text-anchor': 'middle', 'font-size': '10', fill: '#94a3b8' }, d));
+      }
+    });
+
+    function segments(values) {
+      var segs = [];
+      var cur = [];
+      for (var i = 0; i < values.length; i++) {
+        var p = values[i];
+        if (p === null || p === undefined || p === '') {
+          if (cur.length > 1) { segs.push(cur); }
+          cur = [];
+          continue;
+        }
+        cur.push({ x: sx(i), y: sy(p), p: p, i: i });
+      }
+      if (cur.length > 1) { segs.push(cur); }
+      return segs;
+    }
+
+    (progression.players || []).forEach(function(pl) {
+      var isSel = selected && pl.name === selected;
+      var stroke = isSel ? '#2563eb' : '#94a3b8';
+      var opacity = selected ? (isSel ? 1 : 0.22) : 0.45;
+      var widthLine = isSel ? 3 : 1;
+
+      segments(pl.positions || []).forEach(function(seg) {
+        var d = 'M ' + seg[0].x + ' ' + seg[0].y;
+        for (var j = 1; j < seg.length; j++) {
+          d += ' L ' + seg[j].x + ' ' + seg[j].y;
+        }
+        svg.appendChild(svgEl('path', { d: d, fill: 'none', stroke: stroke, 'stroke-width': String(widthLine), opacity: String(opacity) }));
+      });
+
+      if (isSel) {
+        (pl.positions || []).forEach(function(pos, idx) {
+          if (pos === null || pos === undefined || pos === '') { return; }
+          var cx = sx(idx);
+          var cy = sy(pos);
+          var c = svgEl('circle', { cx: cx, cy: cy, r: '3.5', fill: '#2563eb' });
+          var title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+          var wk = (weeks[idx] && weeks[idx].label) ? weeks[idx].label : ('Semaine ' + (idx + 1));
+          title.textContent = pl.name + ' - ' + wk + ': position ' + pos;
+          c.appendChild(title);
+          svg.appendChild(c);
+        });
+      }
+    });
+  }
+
+  var activeBtn = buttons.find(function(b) { return b.classList.contains('active'); });
+  if (activeBtn) {
+    activate(activeBtn.getAttribute('data-tab'));
+  }
 })();
 </script>
 </body>
