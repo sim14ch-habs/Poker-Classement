@@ -93,10 +93,15 @@ h1 { margin: 0 0 4px 0; }
 .evo-down { color: #b91c1c; font-weight: 700; }
 .evo-flat { color: #475569; font-weight: 700; }
 .evo-na { color: #94a3b8; }
-.progression-wrap { width: min(980px, 100%); }
-.progression-toolbar { margin: 8px 0 10px 0; display: flex; gap: 8px; align-items: center; }
+.progression-toolbar { margin: 8px 0 10px 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .progression-toolbar select { padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
-#progress-chart { width: 100%; height: auto; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; }
+.tab-qr-single { margin-top: 12px; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; }
+.tab-qr-title { margin: 0 0 6px 0; color: #334155; font-size: 13px; font-weight: 700; }
+.tab-qr-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.tab-qr-row img { width: 92px; height: 92px; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; }
+.tab-qr-meta { color: #334155; font-size: 12px; }
+.tab-qr-link { color: #334155; font-size: 12px; text-decoration: none; word-break: break-all; }
+.tab-qr-link:hover { text-decoration: underline; }
 .weekly-summary-wrap { width: min(940px, 100%); overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .weekly-summary-wrap .summary-note { margin: 0 0 10px 0; color: #64748b; font-size: 13px; }
 .summary-table { width: min(940px, 100%); table-layout: fixed; }
@@ -104,7 +109,6 @@ h1 { margin: 0 0 4px 0; }
 .summary-table th:nth-child(2), .summary-table td:nth-child(2) { width: 220px; }
 .summary-table th:nth-child(3), .summary-table td:nth-child(3) { width: 220px; }
 .summary-table th:nth-child(4), .summary-table td:nth-child(4) { width: 260px; }
-.summary-table td { white-space: normal; overflow-wrap: anywhere; }
 @media (max-width: 700px) {
 body { margin: 10px; }
 .week-table th, .week-table td { padding: 6px 4px; font-size: 12px; }
@@ -122,7 +126,6 @@ body { margin: 10px; }
 .summary-table th:nth-child(1), .summary-table td:nth-child(1) { width: 70px; }
 .summary-table th:nth-child(2), .summary-table td:nth-child(2) { width: 125px; }
 .summary-table th:nth-child(3), .summary-table td:nth-child(3) { width: 125px; }
-.summary-table th:nth-child(4), .summary-table td:nth-child(4) { width: 180px; }
 .player-search input { width: 100%; min-width: 0; }
 .compare-controls select { width: 100%; min-width: 0; }
 .week-picker select { width: 100%; min-width: 0; }
@@ -2330,14 +2333,87 @@ body { margin: 10px; }
           title.textContent = pl.name + ' - ' + wk + ': position ' + pos;
           c.appendChild(title);
           svg.appendChild(c);
+
+          var labelY = Math.max(margin.top + 10, cy - 8);
+          var txt = svgEl('text', {
+            x: cx,
+            y: labelY,
+            'text-anchor': 'middle',
+            'font-size': '10',
+            'font-weight': '700',
+            fill: '#1d4ed8',
+            stroke: '#ffffff',
+            'stroke-width': '2',
+            'paint-order': 'stroke fill'
+          }, String(pos));
+          svg.appendChild(txt);
         });
       }
     });
   }
+  function renderTabQrInPanels() {
+    var base = window.location.origin + window.location.pathname;
 
+    panels.forEach(function(panel) {
+      var tabId = (panel && panel.id) ? panel.id : '';
+      if (!tabId) { return; }
+
+      var btn = document.querySelector('.tab-btn[data-tab="' + tabId + '"]');
+      var rawLabel = btn ? ((btn.textContent || '') + '').replace(/\s+/g, ' ').trim() : tabId;
+      var label = rawLabel.replace(/\s*\(Apres[^)]*\)\s*$/i, '');
+      var tabUrl = base + '#' + encodeURIComponent(tabId);
+      var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=4&data=' + encodeURIComponent(tabUrl);
+
+      var host = panel.querySelector('.tab-qr-single');
+      if (!host) {
+        host = document.createElement('div');
+        host.className = 'tab-qr-single';
+        panel.appendChild(host);
+      }
+
+      host.innerHTML = '';
+
+      var title = document.createElement('p');
+      title.className = 'tab-qr-title';
+      title.textContent = 'QR de cet onglet';
+
+      var row = document.createElement('div');
+      row.className = 'tab-qr-row';
+
+      var img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = 'QR ' + label;
+      img.src = qrUrl;
+
+      var meta = document.createElement('div');
+      meta.className = 'tab-qr-meta';
+
+      var name = document.createElement('strong');
+      name.textContent = label;
+
+      var link = document.createElement('a');
+      link.className = 'tab-qr-link';
+      link.href = tabUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = tabUrl;
+
+      meta.appendChild(name);
+      meta.appendChild(document.createElement('br'));
+      meta.appendChild(link);
+
+      row.appendChild(img);
+      row.appendChild(meta);
+
+      host.appendChild(title);
+      host.appendChild(row);
+    });
+  }
   applyReplacementColorsAll();
   applyWeeklyPodiumStyles();
   updateCompactWeekLabel();
+  renderTabQrInPanels();
   setupPlayerSearch();
   setupExportPng();
 
@@ -2359,6 +2435,14 @@ body { margin: 10px; }
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
