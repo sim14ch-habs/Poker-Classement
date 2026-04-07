@@ -77,13 +77,15 @@ h1 { margin: 0 0 4px 0; }
 .total-table td.repl-1 { background: #fff2b2 !important; font-weight: 600; }
 .total-table td.repl-2 { background: #fcd5b4 !important; font-weight: 700; }
 .total-table td.repl-3 { background: #fca5a5 !important; color: #7f1d1d; font-weight: 700; }
-.total-compact-table { width: min(680px, 100%); table-layout: fixed; }
-.total-compact-table th:nth-child(1), .total-compact-table td:nth-child(1) { width: 70px; text-align: right; }
-.total-compact-table th:nth-child(3), .total-compact-table td:nth-child(3) { width: 80px; text-align: right; }
-.total-compact-table th:nth-child(4), .total-compact-table td:nth-child(4) { width: 70px; text-align: right; }
-.total-compact-table th:nth-child(5), .total-compact-table td:nth-child(5) { width: 70px; text-align: right; }
-.total-compact-table th:nth-child(6), .total-compact-table td:nth-child(6) { width: 78px; text-align: right; }
-.total-compact-table th:nth-child(7), .total-compact-table td:nth-child(7) { width: 76px; text-align: right; }
+.total-compact-table { width: min(620px, 100%); table-layout: fixed; }
+.total-compact-table th, .total-compact-table td { padding: 6px 6px; text-align: center; }
+.total-compact-table th:nth-child(1), .total-compact-table td:nth-child(1) { width: 54px; }
+.total-compact-table th:nth-child(3), .total-compact-table td:nth-child(3) { width: 68px; }
+.total-compact-table th:nth-child(4), .total-compact-table td:nth-child(4) { width: 58px; }
+.total-compact-table th:nth-child(5), .total-compact-table td:nth-child(5) { width: 58px; }
+.total-compact-table th:nth-child(6), .total-compact-table td:nth-child(6) { width: 62px; }
+.total-compact-table th:nth-child(7), .total-compact-table td:nth-child(7) { width: 60px; }
+.total-compact-table td.total-player { text-align: center; }
 .total-compact-table th.sortable { cursor: pointer; user-select: none; }
 .total-compact-table th.sortable .sort-arrow { margin-left: 5px; color: #94a3b8; font-size: 11px; }
 .total-compact-table th.sortable.sorted-asc .sort-arrow,
@@ -159,7 +161,7 @@ body { margin: 10px; }
 </head>
 <body>
 <h1>Poker Stanley</h1>
-<div class="meta">Mise à jour: 2026-04-07 12:14:39</div>
+<div class="meta">Mise à jour: 2026-04-07 12:16:52</div>
 <div class="legend">
 <span class="pill replacement">Barre orange = remplacé</span>
 <span class="pill absent">Nom rouge = absent non-remplacé</span>
